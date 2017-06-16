@@ -37,19 +37,23 @@ var fnBuild = function () {
     };
 
     var fnAction = function (fn) {
-        var child = require('child_process');
-        var ec = `node ${vars.projectPath}/node_modules/webpack/bin/webpack.js --config ${vars.root}/work/webpack.config.js`;
-        child.exec(ec, function (error, s) {
-            if (error) {
-                console.log(`building failed. \n\n${error}`);
-            }
-            console.log(s);
+        var webpack = require('webpack')
+        var webpackConfig = require(`${vars.root}/work/webpack.config.js`);
+        webpack(webpackConfig, function (err, stats) {
+            if (err) throw err
+            process.stdout.write(stats.toString({
+                colors: true,
+                modules: false,
+                children: false,
+                chunks: false,
+                chunkModules: false
+            }) + '\n')
         });
-        /*
+        
+        var args = require('optimist').argv;
         if (args.w === true || args.watch === true) {
-            ec += ' -w';
+            //webpackConfig.watch = true;
         }
-        */
     };
 
     console.log('building ...');
