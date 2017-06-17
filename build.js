@@ -49,10 +49,13 @@ var fnBuild = function () {
             if (error) {
                 console.error(`building failed. \n\n${error}`);
             }
-            console.log(stats.toString({
+            process.stdout.write(stats.toString({
+                colors: true,
+                modules: false,
+                children: false,
                 chunks: false,
-                colors: true
-            }));
+                chunkModules: false
+            }) + '\n');
         });
     };
 
