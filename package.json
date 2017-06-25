@@ -1,6 +1,6 @@
 {
   "name": "mdev-vue",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "mdev-vue is a compiler for module development.",
   "dependencies": {
     "shelljs": "0.7.5",
