@@ -128,6 +128,18 @@ var removeChild = function (dom) {
 };
 
 
+var getOuterDom = function () {
+    var domId = 'router-view-outer-dom';
+    var dom = document.getElementById(domId);
+    if (!dom) {
+        dom = document.createElement('div');
+        dom.setAttribute('id', domId);
+        document.body.appendChild(dom);
+    }
+    return dom;
+};
+
+
 var fnMount = function (components, index, dom) {
     var $$module = require('./module.js');
     var m = $$module.getModuleInstance(components[index]);
@@ -138,6 +150,12 @@ var fnMount = function (components, index, dom) {
     var _this = this;
     var uid = m.instance._uid;
     if (routerView[uid] instanceof Object === false) {
+        if (index < components.length - 1) {
+            (function () {
+                var dom = getOuterDom();
+                fnMount(components, index + 1, dom);
+            }());
+        }
         return;
     }
 
@@ -282,6 +300,7 @@ var router = {
         var domId = routerView[uid].default;
         var dom = document.getElementById(domId);
 
+        removeChild(getOuterDom());
         fnMount($route.matched.components, 0, dom);
     }
 };
